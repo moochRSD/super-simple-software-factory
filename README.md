@@ -54,19 +54,15 @@ Two steps: get the skill into your repo, then stamp the factory.
 
 ### Agentic Install
 
-Copy `.claude/skills/sssf/` into the target repo and type `/sssf install` inside Claude Code. The skill is named `sssf`, so that is the skill name followed by the `install` argument. There is no bare `/install` command. The agent reads the skill's own `cookbooks/install.md` and does the rest.
+The skill is already available to the pi agent harness from `.pi/skills/sssf/`. To stamp the factory into this repository, run the installer directly from the repo root:
 
 ### Manual Install
 
 **Prereqs:** [`uv`](https://docs.astral.sh/uv/), [`pi`](https://github.com/mariozechner/pi-coding-agent), `sqlite3`, and an API key for whichever providers your roster names (see below). [`bun`](https://bun.sh) only if you want the visualizer.
 
 ```bash
-# 1. get the skill into the target repo
-mkdir -p .claude/skills
-cp -r /path/to/super-simple-software-factory/.claude/skills/sssf .claude/skills/
-
-# 2. stamp the factory (run from the target repo ROOT, the cwd is where everything lands)
-uv run .claude/skills/sssf/scripts/install.py
+# stamp the factory (run from the repository root; the cwd is where everything lands)
+uv run .pi/skills/sssf/scripts/install.py
 cp .env.sample .env                              # then set OPENROUTER_API_KEY
 pi --version                                     # confirm pi is on PATH, or set PI_PATH in .env
 git init && git commit --allow-empty -m init     # chains that end in a commit phase need a repo
@@ -123,7 +119,7 @@ There are three actors here, and the design keeps them separate on purpose: **th
   <img src="images/03_skill_stamp.svg" alt="The sssf skill directory on the left stamping config, adws, and prompt_engineering into three different target repos" width="780">
 </p>
 
-Everything lives in `.claude/skills/sssf/`. `SKILL.md` carries the hard rules and routes each request to one of nine cookbooks. `references/` holds the deep specs, `scripts/` holds the generators, `templates/` holds exactly what gets stamped.
+Everything lives in `.pi/skills/sssf/`. `SKILL.md` carries the hard rules and routes each request to one of nine cookbooks. `references/` holds the deep specs, `scripts/` holds the generators, `templates/` holds exactly what gets stamped.
 
 | What lands in your repo | Where it comes from | Tracked |
 |---|---|---|
@@ -268,10 +264,10 @@ That one cursor query is the entire transport. Live view and full history are th
 
 Files stay the raw record (`raw_output.jsonl`, `envelope.json`, `agent_map.json`). The db is the queryable mirror. Losing it loses nothing you cannot rebuild.
 
-The skill ships a read-only UI for this db at `.claude/skills/sssf/apps/visualizer/`: Vue and Vite served by Bun on port 4600, with sessions, a trace waterfall, and per-phase tool-call detail.
+The skill ships a read-only UI for this db at `.pi/skills/sssf/apps/visualizer/`: Vue and Vite served by Bun on port 4600, with sessions, a trace waterfall, and per-phase tool-call detail.
 
 ```bash
-cd .claude/skills/sssf/apps/visualizer && bun install
+cd .pi/skills/sssf/apps/visualizer && bun install
 SSSF_DB=/abs/path/to/your-repo/adws/adw_data/sssf.db bun run server/index.ts &
 bunx vite
 ```
@@ -284,7 +280,7 @@ It resolves its target through `--db`, then `SSSF_DB`, then `<cwd>/adws/adw_data
 
 ```
 super-simple-software-factory/          # the deployable factory, and nothing else
-└── .claude/skills/sssf/
+└── .pi/skills/sssf/
     ├── SKILL.md                        # hard rules + request routing table
     ├── cookbooks/                      # 9 orchestrator playbooks, loaded lazily
     ├── references/                     # config / handoff / observability specs

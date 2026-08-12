@@ -45,7 +45,7 @@
   <!-- source: the skill -->
   <g class="src">
     <rect x="40" y="96" width="330" height="392" rx="14" fill="#0F172A" stroke="#38BDF8" stroke-width="2.2"/>
-    <text filter="url(#ts3)" class="hd mono" x="64" y="132">.claude/skills/sssf/</text>
+    <text filter="url(#ts3)" class="hd mono" x="64" y="132">.pi/skills/sssf/</text>
     <text filter="url(#ts3)" class="tag mono" x="64" y="154">THE PRODUCT</text>
     <line x1="64" y1="170" x2="346" y2="170" stroke="#334155" stroke-width="1"/>
     <text filter="url(#ts3)" class="row mono" x="64" y="198">SKILL.md</text>
